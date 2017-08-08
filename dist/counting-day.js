@@ -110,6 +110,12 @@ var CountingDay = function () {
         month = options.month,
         year = options.year;
 
+    // Default Value
+
+    var now = new Date();
+    month = month || now.getMonth() + 1;
+    year = year || now.getFullYear();
+
     if (date < 1 || date > 31 || month < 1 || month > 12 || typeof date !== "number" || typeof month !== "number" || typeof year !== "number") {
       throw new Error("[CountingDay]: Invalid constructor argument");
     }
@@ -128,6 +134,24 @@ var CountingDay = function () {
           year = _state.year;
 
       return new Date(year, month - 1, date);
+    }
+  }, {
+    key: "convertToTwoDigit",
+    value: function convertToTwoDigit(num) {
+      var string = num.toString();
+      var isTwoDigit = string.length >= 2;
+      if (isTwoDigit) return string;
+      return "0" + string;
+    }
+  }, {
+    key: "getSQLDate",
+    value: function getSQLDate(date, month, year) {
+      date = date || this.state.date;
+      month = month || this.state.month;
+      year = year || this.state.year;
+      var newDate = this.convertToTwoDigit(date);
+      var newMonth = this.convertToTwoDigit(month);
+      return year + "-" + newMonth + "-" + newDate;
     }
   }, {
     key: "isLeap",

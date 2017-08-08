@@ -12,7 +12,13 @@ class CountingDay {
   MAX_MONTH = 12
 
   constructor(options) {
-    const { date, month, year } = options
+    let { date, month, year } = options
+
+    // Default Value
+    const now = new Date()
+    month = month || now.getMonth() + 1
+    year = year || now.getFullYear()
+
     if (
       (date < 1 || date > 31) ||
       (month < 1 || month > 12) ||
@@ -45,6 +51,22 @@ class CountingDay {
   getDate() {
     const { date, month, year } = this.state
     return new Date(year, month - 1, date)
+  }
+
+  convertToTwoDigit(num) {
+    const string = num.toString()
+    const isTwoDigit = string.length >= 2
+    if (isTwoDigit) return string
+    return `0${string}`
+  }
+
+  getSQLDate(date, month, year) {
+    date = date || this.state.date
+    month = month || this.state.month
+    year = year || this.state.year
+    const newDate = this.convertToTwoDigit(date)
+    const newMonth = this.convertToTwoDigit(month)
+    return `${year}-${newMonth}-${newDate}`
   }
 
   isLeap(year) {

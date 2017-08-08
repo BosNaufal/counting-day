@@ -17,6 +17,13 @@ const getValue = ({ date, month, year }) => {
 
 describe('CountingDay:', () => {
 
+  describe('Init', () => {
+    it("Only need date options", function () {
+      const counting = new CountingDay({ date: 1 })
+      expect(counting).to.be.an.instanceof(CountingDay)
+    });
+  })
+
   describe('isLeap()', () => {
     it('Arguments is optional', () => {
       const counting = new CountingDay({ date: 1, month: 1, year: 2017 })
@@ -163,6 +170,32 @@ describe('CountingDay:', () => {
       expect(counting).to.be.an.instanceof(CountingDay)
       const { date, month, year } = counting.get()
       expect(counting).to.deep.equal(new CountingDay({year, month, date}))
+    });
+  });
+
+  describe("get()", function () {
+    it('Should Return a valid Object', function () {
+      const counting = new CountingDay({ date: 1, month: 1, year: 2017 })
+      expect(counting.get()).to.deep.equal(getValue({ date: 1, month: 1, year: 2017 }))
+      expect(counting.get()).to.be.an.instanceof(Object)
+      expect(counting.get()).to.have.property('day')
+      expect(counting.get()).to.have.property('date')
+      expect(counting.get()).to.have.property('month')
+      expect(counting.get()).to.have.property('year')
+    });
+  });
+
+  describe("getDate()", function () {
+    it('Should return Date Instance', function () {
+      const counting = CountingDay.fromDate(new Date())
+      expect(counting.getDate()).to.be.an.instanceof(Date)
+    });
+  });
+
+  describe("getSQLDate()", function () {
+    it('Should return correct SQL date format', function () {
+      const counting = new CountingDay({ date: 1, month: 1, year: 2017 })
+      expect(counting.getSQLDate()).to.be.equal('2017-01-01')
     });
   });
 
