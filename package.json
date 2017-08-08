@@ -1,8 +1,8 @@
 {
-  "name": "plugin-name",
+  "name": "counting-day",
   "version": "0.0.0",
-  "description": "Plugin Description",
-  "main": "./dist/plugin-name.js",
+  "description": "Mini library to count your day",
+  "main": "./dist/counting-day.min.js",
   "scripts": {
     "start": "webpack-dev-server --config ./webpack/webpack.config.js --inline --hot",
     "build": "webpack --config ./webpack/webpack-prod.config.js -p",
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/BosNaufal/plugin-name.git"
+    "url": "git+https://github.com/BosNaufal/counting-day.git"
   },
   "keywords": [
     "vanilla"
@@ -20,9 +20,9 @@
   "author": "Naufal Rabbani <bosnaufalemail@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/BosNaufal/plugin-name/issues"
+    "url": "https://github.com/BosNaufal/counting-day/issues"
   },
-  "homepage": "https://github.com/BosNaufal/plugin-name#readme",
+  "homepage": "https://github.com/BosNaufal/counting-day#readme",
   "devDependencies": {
     "babel-core": "^6.24.1",
     "babel-loader": "^6.4.1",

@@ -2,7 +2,7 @@
  * Copyright (c) Naufal Rabbani (http://github.com/BosNaufal)
  * Licensed Under MIT (http://opensource.org/licenses/MIT)
  * 
- * Plugin @ Version 0.0.0
+ * CountingDay @ Version 0.0.0
  * 
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -11,9 +11,9 @@
 	else if(typeof define === 'function' && define.amd)
 		define([], factory);
 	else if(typeof exports === 'object')
-		exports["Plugin"] = factory();
+		exports["CountingDay"] = factory();
 	else
-		root["Plugin"] = factory();
+		root["CountingDay"] = factory();
 })(this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -85,10 +85,8 @@ return /******/ (function(modules) { // webpackBootstrap
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -97,9 +95,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
 *
-* Copyright (c) 2016 Naufal Rabbani (http://github.com/BosNaufal)
-* Licensed Under MIT (http://opensource.org/licenses/MIT)
-* CountingDay.js
+*   Copyright (c) 2016 Naufal Rabbani (http://github.com/BosNaufal)
+*   Licensed Under MIT (http://opensource.org/licenses/MIT)
+*   CountingDay.js
 *
 */
 
@@ -271,7 +269,7 @@ var CountingDay = function () {
   return CountingDay;
 }();
 
-/* harmony default export */ __webpack_exports__["default"] = (CountingDay);
+module.exports = CountingDay;
 
 /***/ })
 /******/ ]);

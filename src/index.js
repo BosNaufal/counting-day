@@ -1,9 +1,9 @@
 
 /**
 *
-* Copyright (c) 2016 Naufal Rabbani (http://github.com/BosNaufal)
-* Licensed Under MIT (http://opensource.org/licenses/MIT)
-* CountingDay.js
+*   Copyright (c) 2016 Naufal Rabbani (http://github.com/BosNaufal)
+*   Licensed Under MIT (http://opensource.org/licenses/MIT)
+*   CountingDay.js
 *
 */
 
@@ -169,5 +169,4 @@ class CountingDay {
   }
 }
 
-
-export default CountingDay;
+module.exports = CountingDay;

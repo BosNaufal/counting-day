@@ -12,9 +12,9 @@ module.exports = {
   output: {
     path: __dirname + '/../dist/',
     publicPath: '../dist/',
-    filename: 'plugin' + (isMinify ? '.min' : '') + '.js',
+    filename: npm.name + (isMinify ? '.min' : '') + '.js',
     libraryTarget: "umd",
-    library: "Plugin"
+    library: "CountingDay"
   },
 
   externals: {
@@ -44,7 +44,7 @@ module.exports = {
         "Licensed Under MIT (http://opensource.org/licenses/MIT)",
         "\n",
         "\n",
-        "Plugin @ Version "+ npm.version,
+        "CountingDay @ Version "+ npm.version,
         "\n"
       ])
       .join("")),
