@@ -1,0 +1,47 @@
+{
+  "name": "plugin-name",
+  "version": "0.0.0",
+  "description": "Plugin Description",
+  "main": "./dist/plugin-name.js",
+  "scripts": {
+    "start": "webpack-dev-server --config ./webpack/webpack.config.js --inline --hot",
+    "build": "webpack --config ./webpack/webpack-prod.config.js -p",
+    "bundle": "webpack --config ./webpack/webpack-bundle.config.js && webpack --config ./webpack/webpack-bundle.config.js -p",
+    "test": "karma start karma.conf.js",
+    "prepublish": "npm run build && npm run bundle"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BosNaufal/plugin-name.git"
+  },
+  "keywords": [
+    "vanilla"
+  ],
+  "author": "Naufal Rabbani <bosnaufalemail@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BosNaufal/plugin-name/issues"
+  },
+  "homepage": "https://github.com/BosNaufal/plugin-name#readme",
+  "devDependencies": {
+    "babel-core": "^6.24.1",
+    "babel-loader": "^6.4.1",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-1": "^6.24.1",
+    "chai": "^4.1.1",
+    "cross-env": "^4.0.0",
+    "css-loader": "^0.28.0",
+    "es6-promise": "^4.1.0",
+    "extract-text-webpack-plugin": "^2.1.2",
+    "karma": "^1.7.0",
+    "karma-mocha": "^1.3.0",
+    "karma-mocha-reporter": "^2.2.3",
+    "karma-webpack": "^2.0.4",
+    "mocha": "^3.5.0",
+    "style-loader": "^0.16.1",
+    "webpack": "^2.3.3",
+    "webpack-dev-server": "^2.4.2"
+  },
+  "dependencies": {}
+}
