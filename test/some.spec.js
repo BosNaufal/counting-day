@@ -12,7 +12,6 @@ const getValue = ({ date, month, year }) => {
     date,
     month,
     year,
-    dateObj: dateInstance
   }
 }
 
@@ -81,7 +80,6 @@ describe('CountingDay:', () => {
       expect(counting.addDay(0, 1)).to.have.property('date')
       expect(counting.addDay(0, 1)).to.have.property('month')
       expect(counting.addDay(0, 1)).to.have.property('year')
-      expect(counting.addDay(0, 1)).to.have.property('dateObj')
     });
 
     it("Should return Object there's initDay or initMonth or initYear", () => {
@@ -98,13 +96,18 @@ describe('CountingDay:', () => {
     });
 
     it('Should Return the next date', () => {
-      const counting = new CountingDay({ date: 1, month: 1, year: 2017 })
+      let counting = new CountingDay({ date: 1, month: 1, year: 2017 })
+      expect(counting.addDay(0)).to.be.an.instanceof(CountingDay)
+      expect(counting.get()).to.deep.equal(getValue({ date: 1, month: 1, year: 2017 }))
+
       expect(counting.addDay(31)).to.be.an.instanceof(CountingDay)
       expect(counting.get()).to.deep.equal(getValue({ date: 1, month: 2, year: 2017 }))
 
+      counting = new CountingDay({ date: 1, month: 1, year: 2017 })
       expect(counting.addDay(0, 1)).to.deep.equal(getValue({ date: 1, month: 1, year: 2017 }))
-      expect(counting.addDay(30, 1)).to.deep.equal(getValue({ date: 31, month: 1, year: 2017 }))
       expect(counting.addDay(31, 1)).to.deep.equal(getValue({ date: 1, month: 2, year: 2017 }))
+      expect(counting.addDay(29, 1, 2)).to.deep.equal(getValue({ date: 1, month: 3, year: 2017 }))
+      expect(counting.addDay(30, 1, 2, 2020)).to.deep.equal(getValue({ date: 1, month: 3, year: 2020 }))
       expect(counting.addDay(366, 1)).to.deep.equal(getValue({ date: 1, month: 1, year: 2018 }))
       expect(counting.addDay(366 * 2 + 30, 1)).to.deep.equal(getValue({ date: 31, month: 1, year: 2019 }))
       expect(counting.addDay(366 * 3 + 31 + 30, 1)).to.deep.equal(getValue({ date: 1, month: 3, year: 2020 }))
@@ -151,6 +154,15 @@ describe('CountingDay:', () => {
       const counting = new CountingDay({ date: 1, month: 1, year: 2017 })
       expect(counting.addMonth(0)).to.be.an.instanceof(CountingDay)
       expect(counting.addMonth(10)).to.be.an.instanceof(CountingDay)
+    });
+  });
+
+  describe("fromDate()", function () {
+    it('Should Return a new instance of CountingDay', function () {
+      const counting = CountingDay.fromDate(new Date())
+      expect(counting).to.be.an.instanceof(CountingDay)
+      const { date, month, year } = counting.get()
+      expect(counting).to.deep.equal(new CountingDay({year, month, date}))
     });
   });
 

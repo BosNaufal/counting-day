@@ -115,12 +115,21 @@ var CountingDay = function () {
     }
 
     this.state = _extends({}, options);
-    this.state.dateObj = new Date(year, month - 1, date);
-    this.state.day = this.state.dateObj.getDay();
+    this.state.day = this.getDate().getDay();
     return this;
   }
 
   _createClass(CountingDay, [{
+    key: "getDate",
+    value: function getDate() {
+      var _state = this.state,
+          date = _state.date,
+          month = _state.month,
+          year = _state.year;
+
+      return new Date(year, month - 1, date);
+    }
+  }, {
     key: "isLeap",
     value: function isLeap(year) {
       year = year || this.state.year;
@@ -180,13 +189,17 @@ var CountingDay = function () {
         var isOutOfRange = currentDate > maxDayCurrentMonth();
         if (!isOutOfRange) {
           var dateInstance = new Date(currentYear, currentMonth - 1, currentDate);
-          return typeReturn === 'this' ? _this : {
+          var objectToReturn = {
             day: dateInstance.getDay(),
             date: currentDate,
             month: currentMonth,
-            year: currentYear,
-            dateObj: dateInstance
+            year: currentYear
           };
+          if (typeReturn === 'this') {
+            _this.state = _extends({}, objectToReturn);
+            return _this;
+          }
+          return objectToReturn;
         } else {
           var diff = currentDate - maxDayCurrentMonth();
           currentDate = diff;
@@ -213,13 +226,17 @@ var CountingDay = function () {
         var isOutOfRange = currentMonth > MAX_MONTH;
         if (!isOutOfRange) {
           var dateInstance = new Date(currentYear, currentMonth - 1, currentDate);
-          return typeReturn === 'this' ? _this2 : {
+          var objectToReturn = {
             day: dateInstance.getDay(),
             date: currentDate,
             month: currentMonth,
-            year: currentYear,
-            dateObj: dateInstance
+            year: currentYear
           };
+          if (typeReturn === 'this') {
+            _this2.state = _extends({}, objectToReturn);
+            return _this2;
+          }
+          return objectToReturn;
         } else {
           var diff = currentMonth - MAX_MONTH;
           currentMonth = diff;
@@ -233,7 +250,7 @@ var CountingDay = function () {
     key: "get",
     value: function get() {
       var newState = _extends({}, this.state, {
-        month: this.state.month + 1
+        month: this.state.month
       });
       var date = newState.date,
           month = newState.month,
@@ -242,8 +259,7 @@ var CountingDay = function () {
       var dateInstance = new Date(year, month - 1, date);
       return _extends({}, newState, {
         day: dateInstance.getDay(),
-        date: date,
-        dateObj: dateInstance
+        date: date
       });
     }
   }], [{

@@ -11,4 +11,4 @@ karma.conf.js
 yarn.lock
 yarn-error.log
 npm-error.log
-npm.log
+npm-debug.log

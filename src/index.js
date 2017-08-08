@@ -22,8 +22,7 @@ class CountingDay {
     }
 
     this.state = { ...options }
-    this.state.dateObj = new Date(year, month - 1, date)
-    this.state.day = this.state.dateObj.getDay()
+    this.state.day = this.getDate().getDay()
     return this
   }
 
@@ -41,6 +40,11 @@ class CountingDay {
       month,
       year,
     })
+  }
+
+  getDate() {
+    const { date, month, year } = this.state
+    return new Date(year, month - 1, date)
   }
 
   isLeap(year) {
@@ -99,16 +103,17 @@ class CountingDay {
       const isOutOfRange = currentDate > maxDayCurrentMonth()
       if (!isOutOfRange) {
         const dateInstance = new Date(currentYear, currentMonth - 1, currentDate)
-        return typeReturn === 'this' ?
-          this
-        :
-          {
-            day: dateInstance.getDay(),
-            date: currentDate,
-            month: currentMonth,
-            year: currentYear,
-            dateObj: dateInstance,
-          }
+        const objectToReturn = {
+          day: dateInstance.getDay(),
+          date: currentDate,
+          month: currentMonth,
+          year: currentYear,
+        }
+        if (typeReturn === 'this') {
+          this.state = { ...objectToReturn }
+          return this
+        }
+        return objectToReturn
       }
       else {
         const diff = currentDate - maxDayCurrentMonth()
@@ -132,16 +137,17 @@ class CountingDay {
       const isOutOfRange = currentMonth > MAX_MONTH
       if (!isOutOfRange) {
         const dateInstance = new Date(currentYear, currentMonth - 1, currentDate)
-        return typeReturn === 'this' ?
-          this
-        :
-          {
-            day: dateInstance.getDay(),
-            date: currentDate,
-            month: currentMonth,
-            year: currentYear,
-            dateObj: dateInstance,
-          }
+        const objectToReturn = {
+          day: dateInstance.getDay(),
+          date: currentDate,
+          month: currentMonth,
+          year: currentYear,
+        }
+        if (typeReturn === 'this') {
+          this.state = { ...objectToReturn }
+          return this
+        }
+        return objectToReturn
       }
       else {
         const diff = currentMonth - MAX_MONTH
@@ -156,7 +162,7 @@ class CountingDay {
   get() {
     const newState = {
       ...this.state,
-      month: this.state.month + 1,
+      month: this.state.month,
     }
     const { date, month, year } = newState
     const dateInstance = new Date(year, month - 1, date)
@@ -164,7 +170,6 @@ class CountingDay {
       ...newState,
       day: dateInstance.getDay(),
       date,
-      dateObj: dateInstance,
     }
   }
 }
