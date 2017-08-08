@@ -75,7 +75,7 @@ class CountingDay {
   }
 
   maxDayCount(month, year) {
-    if (month < 1 || typeof month === "string") throw new Error("[CountingDay]: Invalid month index")
+    if (typeof month === "string") throw new Error("[CountingDay]: Invalid month index")
 
     month = month || this.state.month
     year = year || this.state.year
@@ -112,17 +112,27 @@ class CountingDay {
     let currentDate = (initDate || this.state.date) + count
     let currentMonth = initMonth || this.state.month
     let currentYear = initYear || this.state.year
-    let maxDayCurrentMonth = () => {
-      const maxDay = this.maxDayCount(currentMonth, currentYear)
+
+    const IS_NEGATIVE = count < 0
+
+    let maxDayMonth = () => {
+      const monthToCount = IS_NEGATIVE ? currentMonth - 1 : currentMonth
+      const maxDay = this.maxDayCount(monthToCount, currentYear)
       if (!maxDay) {
-        currentYear++
-        currentMonth = 1
+        if (IS_NEGATIVE) currentYear--
+        else currentYear++
+        currentMonth = IS_NEGATIVE ? 12 : 1
         return this.maxDayCount(currentMonth, currentYear)
       }
       return maxDay
     }
+
     const recursive = () => {
-      const isOutOfRange = currentDate > maxDayCurrentMonth()
+
+      let diff = 0
+      let isOutOfRange = currentDate > maxDayMonth()
+      if (IS_NEGATIVE) isOutOfRange = currentDate < 0
+
       if (!isOutOfRange) {
         const dateInstance = new Date(currentYear, currentMonth - 1, currentDate)
         const objectToReturn = {
@@ -138,9 +148,14 @@ class CountingDay {
         return objectToReturn
       }
       else {
-        const diff = currentDate - maxDayCurrentMonth()
+        if (IS_NEGATIVE) {
+          diff = currentDate + maxDayMonth()
+          currentMonth--
+        } else {
+          diff = currentDate - maxDayMonth()
+          currentMonth++
+        }
         currentDate = diff
-        currentMonth += 1
         return recursive()
       }
     }
@@ -151,12 +166,24 @@ class CountingDay {
     const { MAX_MONTH } = this
     this.validArgument(count, "[CountingDay]: Invalid count argument")
     const typeReturn = initDate || initMonth || initYear ? 'object' : 'this'
+    const IS_NEGATIVE = count < 0
 
     let currentDate = initDate || this.state.date
     let currentMonth = (initMonth || this.state.month) + count
     let currentYear = initYear || this.state.year
+
     const recursive = () => {
-      const isOutOfRange = currentMonth > MAX_MONTH
+      let diff = 0
+      let isOutOfRange = currentMonth > MAX_MONTH
+      if (IS_NEGATIVE) {
+        isOutOfRange = currentMonth < 0
+        if (!isOutOfRange && currentMonth === 0) {
+          diff = currentMonth + MAX_MONTH
+          currentMonth = diff
+          currentYear--
+        }
+      }
+
       if (!isOutOfRange) {
         const dateInstance = new Date(currentYear, currentMonth - 1, currentDate)
         const objectToReturn = {
@@ -172,9 +199,14 @@ class CountingDay {
         return objectToReturn
       }
       else {
-        const diff = currentMonth - MAX_MONTH
+        if (IS_NEGATIVE) {
+          diff = currentMonth + MAX_MONTH
+          currentYear--
+        } else {
+          diff = currentMonth - MAX_MONTH
+          currentYear++
+        }
         currentMonth = diff
-        currentYear += 1
         return recursive()
       }
     }

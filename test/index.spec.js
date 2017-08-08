@@ -48,9 +48,7 @@ describe('CountingDay:', () => {
 
     it('Need valid month', () => {
       const counting = new CountingDay({ date: 1, month: 2, year: 2017 })
-      expect(counting.maxDayCount.bind(counting, 0)).to.throw("[CountingDay]: Invalid month index")
-      expect(counting.maxDayCount.bind(counting, -1)).to.throw()
-      expect(counting.maxDayCount.bind(counting, "25")).to.throw()
+      expect(counting.maxDayCount.bind(counting, "25")).to.throw("[CountingDay]: Invalid month index")
       expect(counting.maxDayCount.bind(counting, "a")).to.throw()
     });
 
@@ -133,6 +131,14 @@ describe('CountingDay:', () => {
       expect(counting.isLeap(2017)).to.be.false
       expect(counting.addDay(29, 1, 2, 2017)).to.deep.equal(getValue({ date: 1, month: 3, year: 2017 }))
     });
+
+    it('Should accept negative count', () => {
+      const counting = new CountingDay({ date: 1, month: 1, year: 2020 })
+      expect(counting.addDay(-31, 1)).to.deep.equal(getValue({ date: 1, month: 12, year: 2019 }))
+      expect(counting.addDay(-31 - 30, 1)).to.deep.equal(getValue({ date: 1, month: 11, year: 2019 }))
+      expect(counting.addDay(-31 - 30 - 31, 1)).to.deep.equal(getValue({ date: 1, month: 10, year: 2019 }))
+    });
+
   })
 
 
@@ -141,7 +147,6 @@ describe('CountingDay:', () => {
       const counting = new CountingDay({ date: 1, month: 1, year: 2017 })
       expect(counting.addMonth.bind(counting)).to.throw("[CountingDay]: Invalid count argument")
       expect(counting.addMonth.bind(counting, "0")).to.throw()
-      expect(counting.addMonth.bind(counting, 0)).to.not.throw()
       expect(counting.addMonth.bind(counting, null)).to.throw()
       expect(counting.addMonth.bind(counting, NaN)).to.throw()
     });
@@ -166,6 +171,14 @@ describe('CountingDay:', () => {
       const counting = new CountingDay({ date: 1, month: 1, year: 2017 })
       expect(counting.addMonth(0)).to.be.an.instanceof(CountingDay)
       expect(counting.addMonth(10)).to.be.an.instanceof(CountingDay)
+    });
+
+    it('Should accept negative count', () => {
+      const counting = new CountingDay({ date: 1, month: 1, year: 2020 })
+      expect(counting.addMonth(-1, 1, 1, 2017)).to.deep.equal(getValue({ date: 1, month: 12, year: 2016 }))
+      expect(counting.addMonth(-2, 1, 1, 2017)).to.deep.equal(getValue({ date: 1, month: 11, year: 2016 }))
+      expect(counting.addMonth(-3, 1, 1, 2017)).to.deep.equal(getValue({ date: 1, month: 10, year: 2016 }))
+      expect(counting.addMonth(-24, 1, 1, 2017)).to.deep.equal(getValue({ date: 1, month: 1, year: 2015 }))
     });
   });
 
