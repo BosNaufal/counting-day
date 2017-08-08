@@ -19,8 +19,13 @@ describe('CountingDay:', () => {
 
   describe('Init', () => {
     it("Only need date options", function () {
-      const counting = new CountingDay({ date: 1 })
+      const counting = new CountingDay({ date: new Date().getDate() - 1 })
       expect(counting).to.be.an.instanceof(CountingDay)
+      expect(counting.get()).to.be.an.instanceof(Object)
+      expect(counting.get()).to.have.property('day')
+      expect(counting.get()).to.have.property('date')
+      expect(counting.get()).to.have.property('month')
+      expect(counting.get()).to.have.property('year')
     });
   })
 

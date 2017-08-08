@@ -27,7 +27,7 @@ class CountingDay {
       throw new Error("[CountingDay]: Invalid constructor argument")
     }
 
-    this.state = { ...options }
+    this.state = { ...options, month, year }
     this.state.day = this.getDate().getDay()
     return this
   }

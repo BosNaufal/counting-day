@@ -2,7 +2,7 @@
  * Copyright (c) Naufal Rabbani (http://github.com/BosNaufal)
  * Licensed Under MIT (http://opensource.org/licenses/MIT)
  * 
- * CountingDay @ Version 0.0.1
+ * CountingDay @ Version 0.0.2
  * 
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -120,7 +120,7 @@ var CountingDay = function () {
       throw new Error("[CountingDay]: Invalid constructor argument");
     }
 
-    this.state = _extends({}, options);
+    this.state = _extends({}, options, { month: month, year: year });
     this.state.day = this.getDate().getDay();
     return this;
   }
