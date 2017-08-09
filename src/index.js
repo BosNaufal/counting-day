@@ -19,13 +19,10 @@ class CountingDay {
     month = month || now.getMonth() + 1
     year = year || now.getFullYear()
 
-    if (
-      (date < 1 || date > 31) ||
+    const notValid = (date < 1 || date > 31) ||
       (month < 1 || month > 12) ||
       (typeof date !== "number" || typeof month !== "number" || typeof year !== "number")
-    ) {
-      throw new Error("[CountingDay]: Invalid constructor argument")
-    }
+    if (notValid) throw new Error("[CountingDay]: Invalid constructor argument")
 
     this.state = { ...options, month, year }
     this.state.day = this.getDate().getDay()
@@ -90,7 +87,7 @@ class CountingDay {
 
     if (isThirtyOne) return 31
     else if (isThirty) return 30
-    else if (isFebruary) return this.isLeap(year) ? 30 : 29
+    else if (isFebruary) return this.isLeap(year) ? 29 : 28
     else return false // out of range
   }
 
@@ -131,7 +128,7 @@ class CountingDay {
 
       let diff = 0
       let isOutOfRange = currentDate > maxDayMonth()
-      if (IS_NEGATIVE) isOutOfRange = currentDate < 0
+      if (IS_NEGATIVE) isOutOfRange = currentDate <= 0
 
       if (!isOutOfRange) {
         const dateInstance = new Date(currentYear, currentMonth - 1, currentDate)
@@ -139,7 +136,9 @@ class CountingDay {
           day: dateInstance.getDay(),
           date: currentDate,
           month: currentMonth,
+          maxDay: this.maxDayCount(currentMonth, currentYear),
           year: currentYear,
+          then: this,
         }
         if (typeReturn === 'this') {
           this.state = { ...objectToReturn }
@@ -176,12 +175,12 @@ class CountingDay {
       let diff = 0
       let isOutOfRange = currentMonth > MAX_MONTH
       if (IS_NEGATIVE) {
-        isOutOfRange = currentMonth < 0
-        if (!isOutOfRange && currentMonth === 0) {
-          diff = currentMonth + MAX_MONTH
-          currentMonth = diff
-          currentYear--
-        }
+        isOutOfRange = currentMonth <= 0
+        // if (!isOutOfRange && currentMonth === 0) {
+        //   diff = currentMonth + MAX_MONTH
+        //   currentMonth = diff
+        //   currentYear--
+        // }
       }
 
       if (!isOutOfRange) {
@@ -190,7 +189,9 @@ class CountingDay {
           day: dateInstance.getDay(),
           date: currentDate,
           month: currentMonth,
+          maxDay: this.maxDayCount(currentMonth, currentYear),
           year: currentYear,
+          then: this,
         }
         if (typeReturn === 'this') {
           this.state = { ...objectToReturn }
@@ -224,6 +225,7 @@ class CountingDay {
       ...newState,
       day: dateInstance.getDay(),
       date,
+      maxDay: this.maxDayCount(month, year),
     }
   }
 }
