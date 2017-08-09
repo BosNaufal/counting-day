@@ -154,6 +154,12 @@ describe('CountingDay:', () => {
         expect(instance.addDay(-9, 9, 8, 2020)).to.deep.equal(getValue({ date: 31, month: 7, year: 2020, instance }))
       });
 
+      it("Has 'then' property when has an initial arguments", () => {
+        const instance = new CountingDay({ date: 1, month: 1, year: 2020 })
+        expect(instance.addDay(-1, 1).then).to.be.an.instanceof(CountingDay)
+        expect(instance.addDay(-1).then).to.not.be.an.instanceof(CountingDay)
+      });
+
     })
   }
 
@@ -201,6 +207,12 @@ describe('CountingDay:', () => {
       it('Should Care about month: 0', () => {
         const instance = new CountingDay({ date: 1, month: 1, year: 2020 })
         expect(instance.addMonth(-1, 1, 1)).to.deep.equal(getValue({ date: 1, month: 12, year: 2019, instance }))
+      });
+
+      it("Has 'then' property when has an initial arguments", () => {
+        const instance = new CountingDay({ date: 1, month: 1, year: 2020 })
+        expect(instance.addMonth(-1, 1).then).to.be.an.instanceof(CountingDay)
+        expect(instance.addMonth(-1).then).to.not.be.an.instanceof(CountingDay)
       });
     });
   }

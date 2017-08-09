@@ -2,7 +2,7 @@
  * Copyright (c) Naufal Rabbani (http://github.com/BosNaufal)
  * Licensed Under MIT (http://opensource.org/licenses/MIT)
  * 
- * CountingDay @ Version 0.0.4
+ * CountingDay @ Version 0.0.5
  * 
  */
 (function webpackUniversalModuleDefinition(root, factory) {
