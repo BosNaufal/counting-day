@@ -79,6 +79,8 @@ const couting = new CountingDay({ date: 1, month: 1, year: 2017 })
 console.log(counting.get());
 ```
 
+___
+
 
 ### `fromDate` (Date: date) => (Instance)
 Another way to create a new instance from the `new Date()` Object
@@ -88,6 +90,7 @@ const couting = CountingDay.fromDate(now)
 console.log(counting.get());
 ```
 
+___
 
 
 ### `isLeap` (Number: year) => (Boolean)
@@ -102,6 +105,7 @@ const withManualInit = counting.isLeap(2040)
 console.log(withManualInit); // true
 ```
 
+___
 
 
 ### `maxDayCount` (Number: month, Number: year) => (Number)
@@ -115,6 +119,7 @@ const anotherFebruary = counting.maxDayCount(2, 2020)
 console.log(anotherFebruary); // 29
 ```
 
+___
 
 
 ### `addDay` (Number: count, [Number: date, [Number: month, [Number: year]]]) => (Object)
@@ -133,6 +138,7 @@ const anotherCustomInit = customInit.then().addDay(-5, 15, 2, 2020)
 console.log(anotherCustomInit) // date: 10, month: 2, year: 2020
 ```
 
+___
 
 
 ### `addMonth` (Number: count, [Number: date, [Number: month, [Number: year]]]) => (Object)
@@ -151,6 +157,7 @@ const anotherCustomInit = customInit.then().addMonth(12, 1, 1, 2020)
 console.log(anotherCustomInit) // date: 1, month: 1, year: 2021
 ```
 
+___
 
 
 ### `addYear` (Number: count, [Number: date, [Number: month, [Number: year]]]) => (Object)
@@ -169,6 +176,7 @@ const anotherCustomInit = customInit.then().addYear(12, 1, 1, 2020)
 console.log(anotherCustomInit) // date: 1, month: 1, year: 2022
 ```
 
+___
 
 
 ### `then` () => (Object)
@@ -183,6 +191,8 @@ console.log(customInit); // date: 1, month: 8, year: 2017
 const anotherCustomInit = customInit.then().addMonth(12, 1, 1, 2020)
 console.log(anotherCustomInit) // date: 1, month: 1, year: 2021
 ```
+
+___
 
 
 ### `get` () => (Object)
@@ -202,6 +212,8 @@ console.log(counting.get());
 */
 ```
 
+___
+
 
 ### `getDate` () => (Object)
 This method will create Date instance from the current state
@@ -210,6 +222,7 @@ const couting = new CountingDay({ date: 1, month: 1, year: 2017 })
 counting.getDate() // => new Date(2017, 1, 1)
 ```
 
+___
 
 
 ### `getSQLDate` () => (Object)
