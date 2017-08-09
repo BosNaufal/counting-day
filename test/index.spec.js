@@ -14,7 +14,7 @@ const getValue = ({ date, month, year, instance }) => {
     maxDay: CountingDay.fromDate(dateInstance).maxDayCount(month, year),
     year,
   }
-  if (instance) returnValue.then = instance
+  if (instance) returnValue.then = function then() { return instance }
   return returnValue
 }
 
@@ -104,8 +104,10 @@ describe('CountingDay:', () => {
       it("Should return Object there's initDay or initMonth or initYear", () => {
         const instance = new CountingDay({ date: 1, month: 1, year: 2017 })
         expect(instance.addDay(0, 1, 1, 2017)).to.be.an.instanceof(Object)
-        expect(instance.addDay(0, 1, 1, 2017)).to.deep.equal(getValue({ date: 1, month: 1, year: 2017, instance }))
-        expect(instance.addDay(1, 1, 1, 2017)).to.deep.equal(getValue({ date: 2, month: 1, year: 2017, instance }))
+        let info = instance.addDay(0, 1, 1, 2017)
+        expect(info.date).to.be.equal(1)
+        expect(info.month).to.be.equal(1)
+        expect(info.year).to.be.equal(2017)
       });
 
       it('Should return its instance if no initDay', () => {
@@ -115,49 +117,72 @@ describe('CountingDay:', () => {
       });
 
       it('Should Return the next date', () => {
-        let instance = new CountingDay({ date: 1, month: 1, year: 2017, instance })
+        let instance = new CountingDay({ date: 1, month: 1, year: 2017 })
         expect(instance.addDay(0)).to.be.an.instanceof(CountingDay)
-        expect(instance.get()).to.deep.equal(getValue({ date: 1, month: 1, year: 2017, instance }))
 
-        expect(instance.addDay(31)).to.be.an.instanceof(CountingDay)
-        expect(instance.get()).to.deep.equal(getValue({ date: 1, month: 2, year: 2017, instance }))
+        let info = instance.get()
+        expect(info.date).to.be.equal(1)
+        expect(info.month).to.be.equal(1)
+        expect(info.year).to.be.equal(2017)
 
-        instance = new CountingDay({ date: 1, month: 1, year: 2017, instance })
-        expect(instance.addDay(0, 1)).to.deep.equal(getValue({ date: 1, month: 1, year: 2017, instance }))
-        expect(instance.addDay(31, 1)).to.deep.equal(getValue({ date: 1, month: 2, year: 2017, instance }))
-        expect(instance.addDay(28, 1, 2)).to.deep.equal(getValue({ date: 1, month: 3, year: 2017, instance }))
-        expect(instance.addDay(29, 1, 2, 2020)).to.deep.equal(getValue({ date: 1, month: 3, year: 2020, instance }))
-        expect(instance.addDay(365, 1)).to.deep.equal(getValue({ date: 1, month: 1, year: 2018, instance }))
-        expect(instance.addDay(365 * 2 + 30, 1)).to.deep.equal(getValue({ date: 31, month: 1, year: 2019, instance }))
-        expect(instance.addDay(365 * 3 + 31 + 29, 1)).to.deep.equal(getValue({ date: 1, month: 3, year: 2020, instance }))
+        info = instance.addDay(31, 1)
+        expect(info.date).to.be.equal(1)
+        expect(info.month).to.be.equal(2)
+        expect(info.year).to.be.equal(2017)
+
+        info = instance.addDay(28, 1, 2)
+        expect(info.date).to.be.equal(1)
+        expect(info.month).to.be.equal(3)
+        expect(info.year).to.be.equal(2017)
       });
 
       it('Should care about the leap', () => {
         const instance = new CountingDay({ date: 1, month: 2, year: 2020 })
         expect(instance.isLeap()).to.be.true
-        expect(instance.addDay(29, 1)).to.deep.equal(getValue({ date: 1, month: 3, year: 2020, instance }))
+        let info = instance.addDay(29, 1)
+        expect(info.date).to.be.equal(1)
+        expect(info.month).to.be.equal(3)
+        expect(info.year).to.be.equal(2020)
 
         expect(instance.isLeap(2017)).to.be.false
-        expect(instance.addDay(28, 1, 2, 2017)).to.deep.equal(getValue({ date: 1, month: 3, year: 2017, instance }))
+        info = instance.addDay(28, 1, 2, 2017)
+        expect(info.date).to.be.equal(1)
+        expect(info.month).to.be.equal(3)
+        expect(info.year).to.be.equal(2017)
       });
 
       it('Should accept negative count', () => {
         const instance = new CountingDay({ date: 1, month: 1, year: 2020 })
-        expect(instance.addDay(-31, 1)).to.deep.equal(getValue({ date: 1, month: 12, year: 2019, instance }))
-        expect(instance.addDay(-31 - 30, 1)).to.deep.equal(getValue({ date: 1, month: 11, year: 2019, instance }))
-        expect(instance.addDay(-31 - 30 - 31, 1)).to.deep.equal(getValue({ date: 1, month: 10, year: 2019, instance }))
+
+        let info = instance.addDay(-31, 1)
+        expect(info.date).to.be.equal(1)
+        expect(info.month).to.be.equal(12)
+        expect(info.year).to.be.equal(2019)
+
+        info = instance.addDay(-61, 1)
+        expect(info.date).to.be.equal(1)
+        expect(info.month).to.be.equal(11)
+        expect(info.year).to.be.equal(2019)
       });
 
       it('Should Care about date: 0', () => {
         const instance = new CountingDay({ date: 1, month: 1, year: 2020 })
-        expect(instance.addDay(-1, 1)).to.deep.equal(getValue({ date: 31, month: 12, year: 2019, instance }))
-        expect(instance.addDay(-9, 9, 8, 2020)).to.deep.equal(getValue({ date: 31, month: 7, year: 2020, instance }))
+
+        let info = instance.addDay(-1, 1)
+        expect(info.date).to.be.equal(31)
+        expect(info.month).to.be.equal(12)
+        expect(info.year).to.be.equal(2019)
+
+        info = instance.addDay(-9, 9, 8, 2020)
+        expect(info.date).to.be.equal(31)
+        expect(info.month).to.be.equal(7)
+        expect(info.year).to.be.equal(2020)
       });
 
       it("Has 'then' property when has an initial arguments", () => {
         const instance = new CountingDay({ date: 1, month: 1, year: 2020 })
-        expect(instance.addDay(-1, 1).then).to.be.an.instanceof(CountingDay)
-        expect(instance.addDay(-1).then).to.not.be.an.instanceof(CountingDay)
+        expect(instance.addDay(-1, 1).then).to.be.an('function')
+        expect(instance.addDay(-1, 1).then()).to.be.an.instanceof(CountingDay)
       });
 
     })
@@ -165,7 +190,7 @@ describe('CountingDay:', () => {
 
   const addMonth = () => {
     describe("addMonth", () => {
-      it('Need valid monthCount', () => {
+      it('Need valid count', () => {
         const counting = new CountingDay({ date: 1, month: 1, year: 2017 })
         expect(counting.addMonth.bind(counting)).to.throw("[CountingDay]: Invalid count argument")
         expect(counting.addMonth.bind(counting, "0")).to.throw()
@@ -186,8 +211,16 @@ describe('CountingDay:', () => {
       it("Should return Object there's initDay or initMonth or initYear", () => {
         const instance = new CountingDay({ date: 1, month: 1, year: 2017 })
         expect(instance.addMonth(0, 1, 1, 2017)).to.be.an.instanceof(Object)
-        expect(instance.addMonth(0, 1, 1, 2017)).to.deep.equal(getValue({ date: 1, month: 1, year: 2017, instance }))
-        expect(instance.addMonth(1, 1, 1, 2017)).to.deep.equal(getValue({ date: 1, month: 2, year: 2017, instance }))
+
+        let info = instance.addMonth(0, 1, 1, 2017)
+        expect(info.date).to.be.equal(1)
+        expect(info.month).to.be.equal(1)
+        expect(info.year).to.be.equal(2017)
+
+        info = instance.addMonth(1, 1, 1, 2017)
+        expect(info.date).to.be.equal(1)
+        expect(info.month).to.be.equal(2)
+        expect(info.year).to.be.equal(2017)
       });
 
       it('Should return its instance if no initMonth', () => {
@@ -198,21 +231,98 @@ describe('CountingDay:', () => {
 
       it('Should accept negative count', () => {
         const instance = new CountingDay({ date: 1, month: 1, year: 2020 })
-        expect(instance.addMonth(-1, 1, 1, 2017)).to.deep.equal(getValue({ date: 1, month: 12, year: 2016, instance }))
-        expect(instance.addMonth(-2, 1, 1, 2017)).to.deep.equal(getValue({ date: 1, month: 11, year: 2016, instance }))
-        expect(instance.addMonth(-3, 1, 1, 2017)).to.deep.equal(getValue({ date: 1, month: 10, year: 2016, instance }))
-        expect(instance.addMonth(-24, 1, 1, 2017)).to.deep.equal(getValue({ date: 1, month: 1, year: 2015, instance }))
+
+        let info = instance.addMonth(-1, 1, 1, 2017)
+        expect(info.date).to.be.equal(1)
+        expect(info.month).to.be.equal(12)
+        expect(info.year).to.be.equal(2016)
+
+        info = instance.addMonth(-24, 1, 1, 2017)
+        expect(info.date).to.be.equal(1)
+        expect(info.month).to.be.equal(1)
+        expect(info.year).to.be.equal(2015)
       });
 
       it('Should Care about month: 0', () => {
         const instance = new CountingDay({ date: 1, month: 1, year: 2020 })
-        expect(instance.addMonth(-1, 1, 1)).to.deep.equal(getValue({ date: 1, month: 12, year: 2019, instance }))
+        let info = instance.addMonth(-1, 1, 1)
+        expect(info.date).to.be.equal(1)
+        expect(info.month).to.be.equal(12)
+        expect(info.year).to.be.equal(2019)
+
+        info = instance.addMonth(-13, 1, 1)
+        expect(info.date).to.be.equal(1)
+        expect(info.month).to.be.equal(12)
+        expect(info.year).to.be.equal(2018)
       });
 
       it("Has 'then' property when has an initial arguments", () => {
         const instance = new CountingDay({ date: 1, month: 1, year: 2020 })
-        expect(instance.addMonth(-1, 1).then).to.be.an.instanceof(CountingDay)
-        expect(instance.addMonth(-1).then).to.not.be.an.instanceof(CountingDay)
+        expect(instance.addMonth(-1, 1).then).to.be.an('function')
+        expect(instance.addMonth(-1, 1).then()).to.be.an.instanceof(CountingDay)
+      });
+    });
+  }
+
+  const addYear = () => {
+    describe("addYear", () => {
+      it('Need valid count', () => {
+        const counting = new CountingDay({ date: 1, month: 1, year: 2017 })
+        expect(counting.addYear.bind(counting)).to.throw("[CountingDay]: Invalid count argument")
+        expect(counting.addYear.bind(counting, "0")).to.throw()
+        expect(counting.addYear.bind(counting, null)).to.throw()
+        expect(counting.addYear.bind(counting, NaN)).to.throw()
+      });
+
+      it('Should return an valid object', () => {
+        const counting = new CountingDay({ date: 1, month: 1, year: 2017 })
+        expect(counting.addYear(0, 1)).to.be.an.instanceof(Object)
+        expect(counting.addYear(0, 1)).to.have.property('day')
+        expect(counting.addYear(0, 1)).to.have.property('date')
+        expect(counting.addYear(0, 1)).to.have.property('month')
+        expect(counting.addYear(0, 1)).to.have.property('year')
+        expect(counting.addYear(0, 1)).to.have.property('then')
+      });
+
+      it("Should return Object there's initDay or initMonth or initYear", () => {
+        const instance = new CountingDay({ date: 1, month: 1, year: 2017 })
+        expect(instance.addYear(0, 1, 1, 2017)).to.be.an.instanceof(Object)
+
+        let info = instance.addYear(0, 1, 1, 2017)
+        expect(info.date).to.be.equal(1)
+        expect(info.month).to.be.equal(1)
+        expect(info.year).to.be.equal(2017)
+
+        info = instance.addYear(1, 1, 1, 2017)
+        expect(info.date).to.be.equal(1)
+        expect(info.month).to.be.equal(1)
+        expect(info.year).to.be.equal(2018)
+      });
+
+      it('Should return its instance if no initMonth', () => {
+        const counting = new CountingDay({ date: 1, month: 1, year: 2017 })
+        expect(counting.addYear(0)).to.be.an.instanceof(CountingDay)
+        expect(counting.addYear(10)).to.be.an.instanceof(CountingDay)
+      });
+
+      it('Should accept negative count', () => {
+        const instance = new CountingDay({ date: 1, month: 1, year: 2020 })
+
+        let info = instance.addYear(-1, 1, 1, 2017)
+        expect(info.date).to.be.equal(1)
+        expect(info.month).to.be.equal(1)
+        expect(info.year).to.be.equal(2016)
+
+        info = instance.addYear(-24, 1, 1, 2017)
+        expect(info.date).to.be.equal(1)
+        expect(info.month).to.be.equal(1)
+        expect(info.year).to.be.equal(2017 - 24)
+      });
+
+      it("Has 'then' property when has an initial arguments", () => {
+        const instance = new CountingDay({ date: 1, month: 1, year: 2020 })
+        expect(instance.addYear(-1, 1).then).to.be.an('function')
+        expect(instance.addYear(-1, 1).then()).to.be.an.instanceof(CountingDay)
       });
     });
   }
@@ -261,16 +371,67 @@ describe('CountingDay:', () => {
     });
   }
 
+  const then = () => {
+    describe("then()", function () {
+      it('Should return new Instance', function () {
+        const counting = new CountingDay({ date: 1, month: 1, year: 2017 })
+        let thenInstance = counting.addDay(0, 1).then()
+        expect(thenInstance).to.not.be.equal(counting)
+
+        thenInstance = counting.addMonth(0, 1).then()
+        expect(thenInstance).to.not.be.equal(counting)
+      });
+
+      it('New Instance has new state', function () {
+        const counting = new CountingDay({ date: 1, month: 1, year: 2017 })
+        let state = counting.get()
+        let thenInstance = counting.addDay(2, 1).then()
+        let thenInstanceState = thenInstance.get()
+        expect(thenInstanceState).to.not.deep.equal(state)
+        expect(thenInstanceState.date).to.be.equal(3)
+        expect(thenInstanceState.month).to.be.equal(1)
+        expect(thenInstanceState.year).to.be.equal(2017)
+
+        thenInstance = counting.addMonth(2, 1).then()
+        thenInstanceState = thenInstance.get()
+        expect(thenInstanceState).to.not.deep.equal(state)
+        expect(thenInstanceState.date).to.be.equal(1)
+        expect(thenInstanceState.month).to.be.equal(3)
+        expect(thenInstanceState.year).to.be.equal(2017)
+      });
+
+      it('Should can chain method', () => {
+        let counting = new CountingDay({ date: 1, month: 1, year: 2017 })
+        let chain = counting.addDay(1).addMonth(1)
+        let info = chain.get()
+        expect(info.date).to.be.equal(2)
+        expect(info.month).to.be.equal(2)
+        expect(info.year).to.be.equal(2017)
+        expect(chain).to.be.equal(counting)
+
+        counting = new CountingDay({ date: 1, month: 1, year: 2017 })
+        chain = counting.addDay(1, 1).then().addMonth(5)
+        info = chain.get()
+        expect(info.date).to.be.equal(2)
+        expect(info.month).to.be.equal(6)
+        expect(info.year).to.be.equal(2017)
+        expect(chain).to.not.be.equal(counting)
+      })
+    });
+  }
+
   const all = () => {
     Init()
     isLeap()
     maxDayCount()
     addDay()
     addMonth()
+    addYear()
     fromDate()
     get()
     getDate()
     getSQLDate()
+    then()
   }
 
   return all()

@@ -189,6 +189,27 @@ var CountingDay = function () {
       return true;
     }
   }, {
+    key: "returnValue",
+    value: function returnValue(typeReturn, date, month, year) {
+      var dateInstance = new Date(year, month - 1, date);
+      var objectToReturn = {
+        day: dateInstance.getDay(),
+        date: date,
+        month: month,
+        maxDay: this.maxDayCount(month, year),
+        year: year
+      };
+      if (typeReturn === 'this') {
+        this.state = _extends({}, objectToReturn);
+        return this;
+      } else {
+        objectToReturn.then = function () {
+          return new CountingDay(objectToReturn);
+        };
+      }
+      return objectToReturn;
+    }
+  }, {
     key: "addDay",
     value: function addDay(count, initDate, initMonth, initYear) {
       var _this = this;
@@ -220,20 +241,7 @@ var CountingDay = function () {
         if (IS_NEGATIVE) isOutOfRange = currentDate <= 0;
 
         if (!isOutOfRange) {
-          var dateInstance = new Date(currentYear, currentMonth - 1, currentDate);
-          var objectToReturn = {
-            day: dateInstance.getDay(),
-            date: currentDate,
-            month: currentMonth,
-            maxDay: _this.maxDayCount(currentMonth, currentYear),
-            year: currentYear,
-            then: _this
-          };
-          if (typeReturn === 'this') {
-            _this.state = _extends({}, objectToReturn);
-            return _this;
-          }
-          return objectToReturn;
+          return _this.returnValue(typeReturn, currentDate, currentMonth, currentYear);
         } else {
           if (IS_NEGATIVE) {
             diff = currentDate + maxDayMonth();
@@ -266,30 +274,10 @@ var CountingDay = function () {
       var recursive = function recursive() {
         var diff = 0;
         var isOutOfRange = currentMonth > MAX_MONTH;
-        if (IS_NEGATIVE) {
-          isOutOfRange = currentMonth <= 0;
-          // if (!isOutOfRange && currentMonth === 0) {
-          //   diff = currentMonth + MAX_MONTH
-          //   currentMonth = diff
-          //   currentYear--
-          // }
-        }
+        if (IS_NEGATIVE) isOutOfRange = currentMonth <= 0;
 
         if (!isOutOfRange) {
-          var dateInstance = new Date(currentYear, currentMonth - 1, currentDate);
-          var objectToReturn = {
-            day: dateInstance.getDay(),
-            date: currentDate,
-            month: currentMonth,
-            maxDay: _this2.maxDayCount(currentMonth, currentYear),
-            year: currentYear,
-            then: _this2
-          };
-          if (typeReturn === 'this') {
-            _this2.state = _extends({}, objectToReturn);
-            return _this2;
-          }
-          return objectToReturn;
+          return _this2.returnValue(typeReturn, currentDate, currentMonth, currentYear);
         } else {
           if (IS_NEGATIVE) {
             diff = currentMonth + MAX_MONTH;
@@ -303,6 +291,17 @@ var CountingDay = function () {
         }
       };
       return recursive();
+    }
+  }, {
+    key: "addYear",
+    value: function addYear(count, initDate, initMonth, initYear) {
+      this.validArgument(count, "[CountingDay]: Invalid count argument");
+      var typeReturn = initDate || initMonth || initYear ? 'object' : 'this';
+      var currentDate = initDate || this.state.date;
+      var currentMonth = initMonth || this.state.month;
+      var currentYear = initYear || this.state.year + count;
+      currentYear += count;
+      return this.returnValue(typeReturn, currentDate, currentMonth, currentYear);
     }
   }, {
     key: "get",

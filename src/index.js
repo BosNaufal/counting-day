@@ -102,6 +102,24 @@ class CountingDay {
     return true
   }
 
+  returnValue(typeReturn, date, month, year) {
+    const dateInstance = new Date(year, month - 1, date)
+    const objectToReturn = {
+      day: dateInstance.getDay(),
+      date,
+      month,
+      maxDay: this.maxDayCount(month, year),
+      year,
+    }
+    if (typeReturn === 'this') {
+      this.state = { ...objectToReturn }
+      return this
+    } else {
+      objectToReturn.then = () => new CountingDay(objectToReturn)
+    }
+    return objectToReturn
+  }
+
   addDay(count, initDate, initMonth, initYear) {
     this.validArgument(count, "[CountingDay]: Invalid count argument")
     const typeReturn = initDate || initMonth || initYear ? 'object' : 'this'
@@ -131,20 +149,7 @@ class CountingDay {
       if (IS_NEGATIVE) isOutOfRange = currentDate <= 0
 
       if (!isOutOfRange) {
-        const dateInstance = new Date(currentYear, currentMonth - 1, currentDate)
-        const objectToReturn = {
-          day: dateInstance.getDay(),
-          date: currentDate,
-          month: currentMonth,
-          maxDay: this.maxDayCount(currentMonth, currentYear),
-          year: currentYear,
-          then: this,
-        }
-        if (typeReturn === 'this') {
-          this.state = { ...objectToReturn }
-          return this
-        }
-        return objectToReturn
+        return this.returnValue(typeReturn, currentDate, currentMonth, currentYear)
       }
       else {
         if (IS_NEGATIVE) {
@@ -174,30 +179,10 @@ class CountingDay {
     const recursive = () => {
       let diff = 0
       let isOutOfRange = currentMonth > MAX_MONTH
-      if (IS_NEGATIVE) {
-        isOutOfRange = currentMonth <= 0
-        // if (!isOutOfRange && currentMonth === 0) {
-        //   diff = currentMonth + MAX_MONTH
-        //   currentMonth = diff
-        //   currentYear--
-        // }
-      }
+      if (IS_NEGATIVE) isOutOfRange = currentMonth <= 0
 
       if (!isOutOfRange) {
-        const dateInstance = new Date(currentYear, currentMonth - 1, currentDate)
-        const objectToReturn = {
-          day: dateInstance.getDay(),
-          date: currentDate,
-          month: currentMonth,
-          maxDay: this.maxDayCount(currentMonth, currentYear),
-          year: currentYear,
-          then: this,
-        }
-        if (typeReturn === 'this') {
-          this.state = { ...objectToReturn }
-          return this
-        }
-        return objectToReturn
+        return this.returnValue(typeReturn, currentDate, currentMonth, currentYear)
       }
       else {
         if (IS_NEGATIVE) {
@@ -212,6 +197,16 @@ class CountingDay {
       }
     }
     return recursive()
+  }
+
+  addYear(count, initDate, initMonth, initYear) {
+    this.validArgument(count, "[CountingDay]: Invalid count argument")
+    const typeReturn = initDate || initMonth || initYear ? 'object' : 'this'
+    let currentDate = initDate || this.state.date
+    let currentMonth = (initMonth || this.state.month)
+    let currentYear = initYear || this.state.year + count
+    currentYear += count
+    return this.returnValue(typeReturn, currentDate, currentMonth, currentYear)
   }
 
   get() {
