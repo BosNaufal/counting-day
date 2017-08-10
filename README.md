@@ -226,10 +226,10 @@ ___
 
 
 ### `getSQLDate` () => (Object)
-This method will create Date instance from the current state
+This method will return SQL date format from current state
 ```javascript
 const couting = new CountingDay({ date: 1, month: 1, year: 2017 })
-counting.getDate() // => new Date(2017, 1, 1)
+counting.getSQLDate() // => 2017-01-01
 ```
 
 
