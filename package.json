@@ -1,6 +1,6 @@
 {
   "name": "counting-day",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Mini library to count your day",
   "main": "./dist/counting-day.min.js",
   "scripts": {
