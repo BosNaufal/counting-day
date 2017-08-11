@@ -81,8 +81,8 @@ class CountingDay {
     const THIRTY = [4, 6, 9, 11]
     const FEBRUARY = 2
 
-    const isThirtyOne = THIRTY_ONE.find((index) => index === month)
-    const isThirty = THIRTY.find((index) => index === month)
+    const isThirtyOne = THIRTY_ONE.indexOf(month) !== -1
+    const isThirty = THIRTY.indexOf(month) !== -1
     const isFebruary = FEBRUARY === month
 
     if (isThirtyOne) return 31
@@ -112,7 +112,7 @@ class CountingDay {
       year,
     }
     if (typeReturn === 'this') {
-      this.state = { ...objectToReturn }
+      this.state = objectToReturn
       return this
     } else {
       objectToReturn.then = () => new CountingDay(objectToReturn)

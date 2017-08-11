@@ -2,7 +2,7 @@
  * Copyright (c) Naufal Rabbani (http://github.com/BosNaufal)
  * Licensed Under MIT (http://opensource.org/licenses/MIT)
  * 
- * CountingDay @ Version 0.0.7
+ * CountingDay @ Version 0.0.8
  * 
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -170,12 +170,8 @@ var CountingDay = function () {
       var THIRTY = [4, 6, 9, 11];
       var FEBRUARY = 2;
 
-      var isThirtyOne = THIRTY_ONE.find(function (index) {
-        return index === month;
-      });
-      var isThirty = THIRTY.find(function (index) {
-        return index === month;
-      });
+      var isThirtyOne = THIRTY_ONE.indexOf(month) !== -1;
+      var isThirty = THIRTY.indexOf(month) !== -1;
       var isFebruary = FEBRUARY === month;
 
       if (isThirtyOne) return 31;else if (isThirty) return 30;else if (isFebruary) return this.isLeap(year) ? 29 : 28;else return false; // out of range
@@ -200,7 +196,7 @@ var CountingDay = function () {
         year: year
       };
       if (typeReturn === 'this') {
-        this.state = _extends({}, objectToReturn);
+        this.state = objectToReturn;
         return this;
       } else {
         objectToReturn.then = function () {
