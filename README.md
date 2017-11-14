@@ -21,7 +21,7 @@ var CountingDay = require('counting-day');
 
 ## Usage
 ```javascript
-const couting = new CountingDay({ date: 1, month: 1, year: 2017 })
+const counting = new CountingDay({ date: 1, month: 1, year: 2017 })
 
 let info = counting.addDay(31).get()
 console.log(info);
@@ -36,7 +36,7 @@ console.log(info);
 */
 
 // will mutate the state of the instance
-let last7Days = couting.addDay(-7).get() // date: 25, month: 12, year: 2016
+let last7Days = counting.addDay(-7).get() // date: 25, month: 12, year: 2016
 
 // will directly return the object wihtout get() method and doesn't mutate the instance state
 let last30Days = counting.addDay(-7, 1, 2, 2017) // date: 25, month: 1, year: 2017
@@ -75,7 +75,7 @@ console.log(counting === differentCounting); // false
 ### `Constructor` (Object: { date, month, year }) => (Instance)
 First of all we need to init our Constructor.
 ```javascript
-const couting = new CountingDay({ date: 1, month: 1, year: 2017 })
+const counting = new CountingDay({ date: 1, month: 1, year: 2017 })
 console.log(counting.get());
 ```
 
@@ -86,7 +86,7 @@ ___
 Another way to create a new instance from the `new Date()` Object
 ```javascript
 const now = new Date()
-const couting = CountingDay.fromDate(now)
+const counting = CountingDay.fromDate(now)
 console.log(counting.get());
 ```
 
@@ -96,7 +96,7 @@ ___
 ### `isLeap` (Number: year) => (Boolean)
 It cares about the leap.
 ```javascript
-const couting = new CountingDay({ date: 1, month: 1, year: 2017 })
+const counting = new CountingDay({ date: 1, month: 1, year: 2017 })
 console.log(counting.isLeap()); // false
 counting.addYear(3) // year: 2020
 console.log(counting.isLeap()); // true
@@ -111,7 +111,7 @@ ___
 ### `maxDayCount` (Number: month, Number: year) => (Number)
 It can also count the max day of the month.
 ```javascript
-const couting = new CountingDay({ date: 1, month: 2, year: 2017 })
+const counting = new CountingDay({ date: 1, month: 2, year: 2017 })
 const maxDayOfFebruary = counting.maxDayCount()
 console.log(maxDayOfFebruary); // 28
 
@@ -125,10 +125,10 @@ ___
 ### `addDay` (Number: count, [Number: date, [Number: month, [Number: year]]]) => (Object)
 It can add your day with positive or negative value of `count` argument. Other arguments next to `count` is custom initial and it is optional, you can pass all of them or one of them. When you pass the custom initial arguments you will get a new CountingDay in the `then()` function.
 ```javascript
-const couting = new CountingDay({ date: 1, month: 1, year: 2017 })
+const counting = new CountingDay({ date: 1, month: 1, year: 2017 })
 // Will mutate the state
 counting.addDay(6)
-console.log(couting.get()); // date: 7, month: 1, year: 2017
+console.log(counting.get()); // date: 7, month: 1, year: 2017
 
 // Will not mutate the state
 const customInit = counting.addDay(-2, 5) // start from date: 5
@@ -144,10 +144,10 @@ ___
 ### `addMonth` (Number: count, [Number: date, [Number: month, [Number: year]]]) => (Object)
 Just like `addDay` method, but it will add your month instead your date.
 ```javascript
-const couting = new CountingDay({ date: 1, month: 1, year: 2017 })
+const counting = new CountingDay({ date: 1, month: 1, year: 2017 })
 // Will mutate the state
 counting.addMonth(6)
-console.log(couting.get()); // date: 1, month: 7, year: 2017
+console.log(counting.get()); // date: 1, month: 7, year: 2017
 
 // Will not mutate the state
 const customInit = counting.addMonth(-6, 1, 12) // start from date: 1, month: 12
@@ -163,10 +163,10 @@ ___
 ### `addYear` (Number: count, [Number: date, [Number: month, [Number: year]]]) => (Object)
 Has some behaviout with `addDay` and `addMonth` method. It will add your Year.
 ```javascript
-const couting = new CountingDay({ date: 1, month: 1, year: 2017 })
+const counting = new CountingDay({ date: 1, month: 1, year: 2017 })
 // Will mutate the state
 counting.addYear(6)
-console.log(couting.get()); // date: 1, month: 1, year: 2023
+console.log(counting.get()); // date: 1, month: 1, year: 2023
 
 // Will not mutate the state
 const customInit = counting.addYear(-10, 1, 2, 2000) // start from date: 1, month: 2, year: 2000
@@ -182,7 +182,7 @@ ___
 ### `then` () => (Object)
 `then()` method is not a instance method, it is a function returned by `addDay`, `addMonth`, or `addYear` method that run with custom initial argument.
 ```javascript
-const couting = new CountingDay({ date: 1, month: 1, year: 2017 })
+const counting = new CountingDay({ date: 1, month: 1, year: 2017 })
 
 // Will not mutate the state
 const customInit = counting.addMonth(6, 1, 2) // start from date: 1, month: 2
@@ -199,7 +199,7 @@ ___
 Will return current state instance as an Object.
 ```javascript
 const now = new Date()
-const couting = CountingDay.fromDate(now)
+const counting = CountingDay.fromDate(now)
 console.log(counting.get());
 /*
   => {
@@ -218,7 +218,7 @@ ___
 ### `getDate` () => (Object)
 This method will create Date instance from the current state
 ```javascript
-const couting = new CountingDay({ date: 1, month: 1, year: 2017 })
+const counting = new CountingDay({ date: 1, month: 1, year: 2017 })
 counting.getDate() // => new Date(2017, 1, 1)
 ```
 
@@ -228,7 +228,7 @@ ___
 ### `getSQLDate` () => (Object)
 This method will return SQL date format from current state
 ```javascript
-const couting = new CountingDay({ date: 1, month: 1, year: 2017 })
+const counting = new CountingDay({ date: 1, month: 1, year: 2017 })
 counting.getSQLDate() // => 2017-01-01
 ```
 
